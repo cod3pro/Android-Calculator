@@ -8,4 +8,28 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="bori">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">#444</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+
+    <style name="bori1">
+        <item name="android:textColor">#fff</item>
+        <item name="android:background">#444</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="boriLight">
+        <item name="android:textColor">#fff</item>
+        <item name="android:background">#777</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="screen">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
 </resources>
