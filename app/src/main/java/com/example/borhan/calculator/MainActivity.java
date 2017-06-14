@@ -1,11 +1,15 @@
 package com.example.borhan.calculator;
 
+import android.content.res.Configuration;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 
     }
 
@@ -63,8 +65,14 @@ public class MainActivity extends AppCompatActivity {
                 tx.append("9");
                 break;
             case "backButton":
-                CharSequence charSequence = tx.getText().subSequence(0, tx.getText().length()-1);
-                tx.setText(charSequence+"");
+                if(tx.getText().length() <= 0){
+
+                }
+                else {
+                    CharSequence charSequence = tx.getText().subSequence(0, tx.getText().length()-1);
+                    tx.setText(charSequence+"");
+                }
+
                 break;
             case "symbolplus":
                 if(tx.getText().length()-1 != -1) {
@@ -95,10 +103,10 @@ public class MainActivity extends AppCompatActivity {
                     char check = tx.getText().charAt(tx.getText().length() - 1);
                     if (check == '+'||check == '-'||check == 'x'||check == '÷') {
                         CharSequence charSequence3 = tx.getText().subSequence(0, tx.getText().length()-1);
-                        numbers = charSequence3 + "x";
+                        numbers = charSequence3 + "*";
                         tx.setText(numbers);
                     } else {
-                        tx.append("x");
+                        tx.append("*");
                     }
                 }
                 break;
@@ -136,8 +144,14 @@ public class MainActivity extends AppCompatActivity {
                 tx.append("!");
                 break;
             case "clearAll":
-                tx.setText("");
-                tx1.setText("");
+                if(tx.getText().length() <= 0){
+
+                }
+                else {
+                    tx.setText("");
+                    tx1.setText("");
+                }
+
                 break;
             case "symbolequal":
                 basicCalculation(tx.getText().toString());
@@ -152,46 +166,65 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     List<String> templist = null;
 
 
-    public void basicCalculation(String s){
+    public void basicCalculation(String s) {
         tx1 = (TextView) findViewById(R.id.textView2);
         tx1.setText(s);
         double total = 0;
         double allTotal = 0;
-        int num1 = 0;
+        double num1 = 0;
         String sign;
         String[] tokens;
 
-        for(int count=0; count < s.length()-1; count++){
+        for (int count = 0; count < s.length() - 1; count++) {
             //templist = Arrays.asList(s.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)"));
-            templist = Arrays.asList(s.split("(\\+)+(\\d.\\d)|(?<=\\d.\\d)(?=\\+)|(?<=\\+)(?=\\d)|(?<=\\d)(?=\\+)"));
+            //templist = Arrays.asList(s.split("(?=\\+)(\\d+\\.\\d+)|(?<=\\d+\\.\\d+)(?=\\+)|(?<=\\+)(?=\\d)|(?<=\\d)(?=\\+)"));
 
+            //templist = Arrays.asList(s.split("(?<=\\+)|(?=\\+)")); //original and working one
+
+
+            templist = Arrays.asList(s.split("(?<=(-|\\+|\\*|\\÷))|(?=(-|\\+|\\*|\\÷))"));
         }
 
         sign = "";
-        allTotal = Integer.parseInt(templist.get(0));
+        allTotal = Double.parseDouble(templist.get(0));
+
+        DecimalFormat df = new DecimalFormat("0.00");
+
+
+
 
         for(int i=1; i < templist.size(); i++){
 
-            if((templist.get(i).matches("\\d*")))
+            if((templist.get(i).matches("\\d*|\\d*\\.\\d*")))
             {
-                num1 = Integer.parseInt(templist.get(i));
-                Toast.makeText(this,"h1",Toast.LENGTH_SHORT).show();
+                //num1 = Integer.parseInt(templist.get(i));
+                num1 = Double.parseDouble(templist.get(i));
 
                 switch (sign){
                     case "+":
                         allTotal += num1;
+                        allTotal = Double.parseDouble(df.format(allTotal).replaceAll("\\.00$", ""));
+
                         break;
                     case "-":
                         allTotal -= num1;
+                        allTotal = Double.parseDouble(df.format(allTotal).replaceAll("\\.00$", ""));
+
                         break;
-                    case "x":
+                    case "*":
                         allTotal *= num1;
+                        allTotal = Double.parseDouble(df.format(allTotal).replaceAll("\\.00$", ""));
+
                         break;
                     case "÷":
                         allTotal /= num1;
+                        allTotal = Double.parseDouble(df.format(allTotal).replaceAll("\\.00$", ""));
+
                         break;
 
                 }
@@ -202,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        tx1.setText(templist.get(0)+templist.get(1)+"");
+        tx1.setText(allTotal+"");
 
     }
 

@@ -32,4 +32,9 @@
         <item name="android:textSize">30sp</item>
     </style>
 
+    <style name="result">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">60sp</item>
+    </style>
+
 </resources>
